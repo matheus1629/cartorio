@@ -18,7 +18,6 @@ import java.util.Set;
 public class SituacaoEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", length = 20)
     private String idSituacao;
     @Column(name = "nome", length = 50, nullable = false)

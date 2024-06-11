@@ -14,7 +14,6 @@ import java.util.Set;
 public class CartorioEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     private Integer idCartorio;
     @Column(name = "nome", length = 150, nullable = false)
@@ -25,7 +24,12 @@ public class CartorioEntity {
     @JoinColumn(name = "situacao_id", referencedColumnName = "id", nullable = false)
     private SituacaoEntity situacaoEntity;
 
-    @ManyToMany(mappedBy = "cartorios")
+    @ManyToMany()
+    @JoinTable(
+            name = "cartorio_atribuicao",
+            joinColumns = @JoinColumn(name = "cartorio_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "atribuicao_id", referencedColumnName = "id")
+    )
     private Set<AtribuicaoEntity> atribuicoes;
 
 

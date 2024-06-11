@@ -1,4 +1,4 @@
-package com.escriba.cartorio.dto.atribuicao;
+package com.escriba.cartorio.dto.situacao;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AtribuicaoCompletoDTO {
-    private String idAtribuicao;
+public class SituacaoDTO {
+    private String idSituacao;
     private String nome;
-    private Boolean situacao;
 }

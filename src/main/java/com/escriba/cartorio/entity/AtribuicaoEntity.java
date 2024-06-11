@@ -14,18 +14,12 @@ import java.util.Set;
 public class AtribuicaoEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", length = 20)
     private String idAtribuicao;
     @Column(name = "nome", length = 50, nullable = false)
     private String nome;
     private Boolean situacao;
-    @ManyToMany
-    @JoinTable(
-            name = "cartorio_atribuicao",
-            joinColumns = @JoinColumn(name = "atribuicao_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "cartorio_id", referencedColumnName = "id")
-    )
+    @ManyToMany(mappedBy = "atribuicoes")
     private Set<CartorioEntity> cartorios;
 
 }
