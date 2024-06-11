@@ -1,7 +1,9 @@
 package com.escriba.cartorio.controller;
 
 import com.escriba.cartorio.Service.CartorioService;
+import com.escriba.cartorio.dto.PageDTO;
 import com.escriba.cartorio.dto.cartorio.CartorioCompletoDTO;
+import com.escriba.cartorio.dto.cartorio.CartorioPaged;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +22,12 @@ public class CartorioController {
 
     private final CartorioService cartorioService;
 
-    @GetMapping("/{idCartorio}")
+    @GetMapping("/paginado/{page}")
+    public ResponseEntity<PageDTO<CartorioPaged>> getByPage(@PathVariable("page") Integer page) {
+        return new ResponseEntity<>(cartorioService.getPagedCartorios(page), HttpStatus.OK);
+    }
+
+    @GetMapping("/data/{idCartorio}")
     public ResponseEntity<CartorioCompletoDTO> getById(@PathVariable("idCartorio") Integer idCartorio) {
         return new ResponseEntity<>(cartorioService.getCartorioById(idCartorio), HttpStatus.OK);
     }
