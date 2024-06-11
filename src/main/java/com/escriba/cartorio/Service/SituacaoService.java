@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 public class SituacaoService {
 
     private final SituacaoRepository situacaoRepository;
+
     public SituacaoEntity getSituacaoById(String idSituacao) {
         return situacaoRepository.getOne(idSituacao);
     }

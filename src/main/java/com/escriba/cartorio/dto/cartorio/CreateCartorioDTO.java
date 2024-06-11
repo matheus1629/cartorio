@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Data
@@ -14,8 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 public class CreateCartorioDTO {
     @Positive
+    @NotNull
     private Integer idCartorio;
-    @Size(min = 1,max = 150)
+    @Size(min = 1, max = 150)
     @NotBlank
     private String nome;
     @Size(max = 250)

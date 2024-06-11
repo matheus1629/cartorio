@@ -39,8 +39,7 @@ public class CartorioController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<CartorioDTO> updateCartorio(@PathVariable("idCartorio") Integer idCartorio,
-            @RequestBody @Valid UpdateCartorioDTO updateCartorioDTO) {
+    public ResponseEntity<CartorioDTO> updateCartorio(@RequestBody @Valid UpdateCartorioDTO updateCartorioDTO) {
         return new ResponseEntity<>(cartorioService.updateCartorio(updateCartorioDTO), HttpStatus.ACCEPTED);
     }
 

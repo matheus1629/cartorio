@@ -13,12 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateCartorioDTO {
-    @Size(min = 1,max = 150)
+    @Positive
+    private Integer idCartorio;
+    @Size(min = 1, max = 150)
     private String nome;
     @Size(max = 250)
     private String observacao;
-
     private String idSituacao;
-
     private List<String> idAtribuicoes;
 }

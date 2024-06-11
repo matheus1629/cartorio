@@ -1,11 +1,12 @@
-CREATE TABLE cartorio_atribuicao (
-    cartorio_id INT NOT NULL,
+CREATE TABLE cartorio_atribuicao
+(
+    cartorio_id   INT         NOT NULL,
     atribuicao_id VARCHAR(20) NOT NULL,
     PRIMARY KEY (cartorio_id, atribuicao_id),
     CONSTRAINT fk_cartorio
         FOREIGN KEY (cartorio_id)
-        REFERENCES cartorio (id),
+            REFERENCES cartorio (id),
     CONSTRAINT fk_atribuicao
         FOREIGN KEY (atribuicao_id)
-        REFERENCES atribuicao (id)
+            REFERENCES atribuicao (id)
 );

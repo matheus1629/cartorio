@@ -19,17 +19,10 @@ import java.util.stream.Collectors;
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers,
-                                                                  HttpStatus status,
-                                                                  WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
         //Get all errors
-        List<String> errors = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(x -> x.getField() + ": " + x.getDefaultMessage())
-                .collect(Collectors.toList());
+        List<String> errors = ex.getBindingResult().getFieldErrors().stream().map(x -> x.getField() + ": " + x.getDefaultMessage()).collect(Collectors.toList());
 
         Map<String, Object> body = createResponseBody(status, errors.get(0).toString());
 
@@ -39,15 +32,14 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(BusinessRuleException.class)
     public ResponseEntity<Object> handleException(BusinessRuleException exception) {
 
-        Map<String, Object> body = createResponseBody(HttpStatus.CONFLICT, exception.getMessage());
-        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+        Map<String, Object> body = createResponseBody(exception.getHttpStatus(), exception.getMessage());
+        return new ResponseEntity<>(body, exception.getHttpStatus());
     }
 
     @Override
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
-                                                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         if (!(ex.getCause() instanceof JsonMappingException)) {
-            return new ResponseEntity("", headers, status);
+            return new ResponseEntity<>("", headers, status);
         }
 
         JsonMappingException e = (JsonMappingException) ex.getCause();
@@ -58,14 +50,13 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
         for (JsonMappingException.Reference reference : e.getPath()) {
             String fieldName = reference.getFieldName();
-            messages.add(fieldName+": Campo inválido!");
+            messages.add(fieldName + ": Campo inválido!");
         }
 
         body.put("messages", messages);
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
-
 
 
     @ExceptionHandler(ConstraintViolationException.class)

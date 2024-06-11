@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,8 +33,7 @@ public class CartorioService {
     private final Integer size = 10;
 
     public CartorioDTO getCartorioById(Integer id) {
-        CartorioEntity cartorioEntity = cartorioRepository.findById(id).orElseThrow();
-        return modelMapper.map(cartorioEntity, CartorioDTO.class);
+        return modelMapper.map(getCartorioEntityById(id), CartorioDTO.class);
     }
 
     public PageDTO<CartorioPaged> getPagedCartorios(Integer page) {
@@ -68,8 +68,10 @@ public class CartorioService {
     }
 
     public CartorioDTO updateCartorio(UpdateCartorioDTO updateCartorioDTO) {
-        validateIfIdCartorioExist(updateCartorioDTO.getIdCartorio());
-        validateIfNameCartorioExist(updateCartorioDTO.getNome());
+        CartorioEntity cartorioEntityById = getCartorioEntityById(updateCartorioDTO.getIdCartorio());
+        if (!updateCartorioDTO.getNome().equals(cartorioEntityById.getNome())) {
+            validateIfNameCartorioExist(updateCartorioDTO.getNome());
+        }
 
         SituacaoEntity situacauEntity = situacaoService.getSituacaoById(updateCartorioDTO.getIdSituacao());
         Set<AtribuicaoEntity> atribuicaoEntities = atribuicaoService.getAtribuicoesByIds(updateCartorioDTO.getIdAtribuicoes());
@@ -84,18 +86,21 @@ public class CartorioService {
         return modelMapper.map(cartorioSaved, CartorioDTO.class);
     }
 
+    private CartorioEntity getCartorioEntityById(Integer idCartorio) {
+        return cartorioRepository.findById(idCartorio).orElseThrow(() -> new BusinessRuleException("Cartorio não encontrado", HttpStatus.NOT_FOUND));
+    }
+
+
     private void validateIfIdCartorioExist(Integer idCartorio) {
         cartorioRepository.findById(idCartorio).ifPresent(cartorio -> {
-            throw new BusinessRuleException("Registro já cadastrado");
+            throw new BusinessRuleException("Registro já cadastrado", HttpStatus.CONFLICT);
         });
     }
 
     private void validateIfNameCartorioExist(String cartorioName) {
         cartorioRepository.findByNome(cartorioName).ifPresent(cartorio -> {
-            throw new BusinessRuleException("Nome já informado no registro com código " + cartorio.getIdCartorio() + ".");
+            throw new BusinessRuleException("Nome já informado no registro com código " + cartorio.getIdCartorio() + ".", HttpStatus.CONFLICT);
         });
-
     }
-
 
 }

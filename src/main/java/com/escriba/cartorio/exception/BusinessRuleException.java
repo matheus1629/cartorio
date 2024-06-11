@@ -1,7 +1,15 @@
 package com.escriba.cartorio.exception;
 
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+
+@Getter
 public class BusinessRuleException extends RuntimeException {
-    public BusinessRuleException(String message) {
+    private final HttpStatus httpStatus;
+
+    public BusinessRuleException(String message, HttpStatus httpStatus) {
         super(message);
+        this.httpStatus = httpStatus;
     }
+
 }
