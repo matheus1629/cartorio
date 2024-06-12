@@ -61,7 +61,7 @@ public class AtribuicaoService {
     public AtribuicaoDTO updateAtribuicao(UpdateAtribuicaoDTO updateAtribuicaoDTO) {
         AtribuicaoEntity atribuicaoEntityById = getAtribuicaoEntityById(updateAtribuicaoDTO.getIdAtribuicao());
 
-        if (!updateAtribuicaoDTO.getNome().equals(atribuicaoEntityById.getNome())) {
+        if (!updateAtribuicaoDTO.getNome().toLowerCase().equals(atribuicaoEntityById.getNome().toLowerCase())) {
             validateIfNameAtribuicaoExist(updateAtribuicaoDTO.getNome());
         }
 

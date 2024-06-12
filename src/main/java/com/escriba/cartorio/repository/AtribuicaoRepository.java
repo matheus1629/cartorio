@@ -16,10 +16,10 @@ public interface AtribuicaoRepository extends JpaRepository<AtribuicaoEntity, St
     @Query("SELECT new com.escriba.cartorio.dto.atribuicao.AtribuicaoPaged(a.idAtribuicao, a.nome) FROM AtribuicaoEntity a")
     Page<AtribuicaoPaged> findAllPaged(Pageable pageable);
 
+    Optional<AtribuicaoEntity> findByNome(String atribuicaoName);
+
     @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END " +
             "FROM CartorioEntity c JOIN c.atribuicoes a " +
             "WHERE a.idAtribuicao = :idAtribuicao")
     boolean existsCartorioByAtribuicaoId(String idAtribuicao);
-
-    Optional<AtribuicaoEntity> findByNome(String atribuicaoName);
 }

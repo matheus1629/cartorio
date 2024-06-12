@@ -52,7 +52,7 @@ public class CartorioService {
         validateIfIdCartorioExist(createCartorioDTO.getIdCartorio());
         validateIfNameCartorioExist(createCartorioDTO.getNome());
 
-        SituacaoEntity situacauEntity = situacaoService.getSituacaoById(createCartorioDTO.getIdSituacao());
+        SituacaoEntity situacauEntity = situacaoService.getSituacaoEntityById(createCartorioDTO.getIdSituacao());
         Set<AtribuicaoEntity> atribuicaoEntities = atribuicaoService.getAtribuicoesByIds(createCartorioDTO.getIdAtribuicoes());
 
         CartorioEntity cartorioEntity = modelMapper.map(createCartorioDTO, CartorioEntity.class);
@@ -68,11 +68,11 @@ public class CartorioService {
     public CartorioDTO updateCartorio(UpdateCartorioDTO updateCartorioDTO) {
         CartorioEntity cartorioEntityById = getCartorioEntityById(updateCartorioDTO.getIdCartorio());
 
-        if (!updateCartorioDTO.getNome().equals(cartorioEntityById.getNome())) {
+        if (!updateCartorioDTO.getNome().toLowerCase().equals(cartorioEntityById.getNome().toLowerCase())) {
             validateIfNameCartorioExist(updateCartorioDTO.getNome());
         }
 
-        SituacaoEntity situacauEntity = situacaoService.getSituacaoById(updateCartorioDTO.getIdSituacao());
+        SituacaoEntity situacauEntity = situacaoService.getSituacaoEntityById(updateCartorioDTO.getIdSituacao());
         Set<AtribuicaoEntity> atribuicaoEntities = atribuicaoService.getAtribuicoesByIds(updateCartorioDTO.getIdAtribuicoes());
 
         CartorioEntity cartorioEntity = modelMapper.map(updateCartorioDTO, CartorioEntity.class);
