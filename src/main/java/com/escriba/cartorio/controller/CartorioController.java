@@ -2,10 +2,10 @@ package com.escriba.cartorio.controller;
 
 import com.escriba.cartorio.Service.CartorioService;
 import com.escriba.cartorio.dto.PageDTO;
-import com.escriba.cartorio.dto.cartorio.UpdateCartorioDTO;
 import com.escriba.cartorio.dto.cartorio.CartorioDTO;
 import com.escriba.cartorio.dto.cartorio.CartorioPaged;
 import com.escriba.cartorio.dto.cartorio.CreateCartorioDTO;
+import com.escriba.cartorio.dto.cartorio.UpdateCartorioDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,7 +29,7 @@ public class CartorioController {
     }
 
     @GetMapping("/data/{idCartorio}")
-    public ResponseEntity<CartorioDTO> getById(@PathVariable("idCartorio") Integer idCartorio) {
+    public ResponseEntity<CartorioDTO> getCartorioById(@PathVariable("idCartorio") Integer idCartorio) {
         return new ResponseEntity<>(cartorioService.getCartorioById(idCartorio), HttpStatus.OK);
     }
 

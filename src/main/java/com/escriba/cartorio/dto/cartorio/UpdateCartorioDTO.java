@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UpdateCartorioDTO {
     @Positive
+    @NotBlank
     private Integer idCartorio;
     @Size(min = 1, max = 150)
     private String nome;

@@ -18,9 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,17 +30,11 @@ public class CartorioService {
     private final SituacaoService situacaoService;
     private final AtribuicaoService atribuicaoService;
 
-    private final Integer size = 10;
-
-    public CartorioDTO getCartorioById(Integer idCartorio) {
-        return modelMapper.map(getCartorioEntityById(idCartorio), CartorioDTO.class);
-    }
-
     public PageDTO<CartorioPaged> getPagedCartorios(Integer page) {
+        int size = 10;
         Pageable pageable = PageRequest.of(page, size);
         Page<CartorioPaged> cartorioRepositoryAllPaged = cartorioRepository.findAllPaged(pageable);
-        List<CartorioPaged> cartorioPageds = cartorioRepositoryAllPaged.getContent().stream()
-                .collect(Collectors.toList());
+        List<CartorioPaged> cartorioPageds = new ArrayList<>(cartorioRepositoryAllPaged.getContent());
 
         return new PageDTO<>(cartorioRepositoryAllPaged.getTotalElements(),
                 cartorioRepositoryAllPaged.getTotalPages(),
@@ -48,6 +42,10 @@ public class CartorioService {
                 size,
                 cartorioPageds);
 
+    }
+
+    public CartorioDTO getCartorioById(Integer idCartorio) {
+        return modelMapper.map(getCartorioEntityById(idCartorio), CartorioDTO.class);
     }
 
     public CartorioDTO createCartorio(CreateCartorioDTO createCartorioDTO) {
@@ -69,6 +67,7 @@ public class CartorioService {
 
     public CartorioDTO updateCartorio(UpdateCartorioDTO updateCartorioDTO) {
         CartorioEntity cartorioEntityById = getCartorioEntityById(updateCartorioDTO.getIdCartorio());
+
         if (!updateCartorioDTO.getNome().equals(cartorioEntityById.getNome())) {
             validateIfNameCartorioExist(updateCartorioDTO.getNome());
         }
