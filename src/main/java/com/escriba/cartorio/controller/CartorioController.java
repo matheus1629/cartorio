@@ -43,4 +43,10 @@ public class CartorioController {
         return new ResponseEntity<>(cartorioService.updateCartorio(updateCartorioDTO), HttpStatus.ACCEPTED);
     }
 
+    @DeleteMapping("/delete/{idCartorio}")
+    public ResponseEntity<Void> deleteCartorio(@PathVariable Integer idCartorio) {
+        cartorioService.deleteCartorio(idCartorio);
+        return ResponseEntity.noContent().build();
+    }
+
 }

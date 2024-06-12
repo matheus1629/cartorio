@@ -32,8 +32,8 @@ public class CartorioService {
 
     private final Integer size = 10;
 
-    public CartorioDTO getCartorioById(Integer id) {
-        return modelMapper.map(getCartorioEntityById(id), CartorioDTO.class);
+    public CartorioDTO getCartorioById(Integer idCartorio) {
+        return modelMapper.map(getCartorioEntityById(idCartorio), CartorioDTO.class);
     }
 
     public PageDTO<CartorioPaged> getPagedCartorios(Integer page) {
@@ -84,6 +84,15 @@ public class CartorioService {
         CartorioEntity cartorioSaved = cartorioRepository.save(cartorioEntity);
 
         return modelMapper.map(cartorioSaved, CartorioDTO.class);
+    }
+
+    public void deleteCartorio(Integer idCartorio) {
+        if (!getCartorioEntityById(idCartorio).getAtribuicoes().isEmpty()) {
+            throw new BusinessRuleException("Registro utilizado em outro cadastro", HttpStatus.CONFLICT);
+        } else {
+            cartorioRepository.deleteById(idCartorio);
+        }
+
     }
 
     private CartorioEntity getCartorioEntityById(Integer idCartorio) {
